@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:news_app/feature/home/data/models/news_model.dart';
-import 'package:news_app/network/resulet_api.dart';
+import 'package:news_app/core/network/resulet_api.dart';
 
 abstract class NewsApi {
   static Future<ResuletApi<NewsModel>> getNews() async {
