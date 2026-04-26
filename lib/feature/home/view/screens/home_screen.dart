@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/feature/home/data/api/news_api.dart';
-import 'package:news_app/feature/home/data/models/news_model.dart';
-import 'package:news_app/feature/home/widgets/image_item_widget.dart';
-import 'package:news_app/network/resulet_api.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:news_app/feature/home/view/widgets/image_item_widget.dart';
+import 'package:news_app/feature/home/view_model/home_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,13 +12,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Articles> articles = [];
-  bool isLoading = true;
-  String errorMasseg = "";
+  late final HomeCubit _cubit;
   @override
   void initState() {
     super.initState();
-    getNews();
+    _cubit = HomeCubit();
+    _cubit.getNews();
   }
 
   @override
@@ -31,45 +29,41 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('News App', style: Theme.of(context).textTheme.bodyLarge),
         centerTitle: true,
       ),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : errorMasseg.isEmpty
-          ? ListView.builder(
+      body: BlocBuilder<HomeCubit, HomeState>(
+        bloc: _cubit,
+        builder: (context, state) {
+          if (state is Homeloading) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (state is HomeSuccess) {
+            return ListView.builder(
               itemBuilder: (context, index) {
                 return ImageItemWidget(
-                  image: articles[index].urlToImage ?? dummyImage,
-                  title: articles[index].title ?? "",
+                  image: _cubit.articles[index].urlToImage ?? dummyImage,
+                  title: _cubit.articles[index].title ?? "",
                   onTap: () {},
                 );
               },
-              itemCount: articles.length,
-            )
-          : Center(
+              itemCount: _cubit.articles.length,
+            );
+          }
+
+          if (state is HomeError) {
+            return Center(
               child: Text(
-                errorMasseg,
+                state.error,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: .w400,
                   color: Color(0xffFFFFFF),
                 ),
               ),
-            ),
+            );
+          }
+          return SizedBox.shrink();
+        },
+      ),
     );
-  }
-
-  Future<void> getNews() async {
-    isLoading = true;
-    setState(() {});
-    final resulet = await NewsApi.getNews();
-    switch (resulet) {
-      case Success<NewsModel>():
-        articles = resulet.data.articles ?? [];
-        isLoading = false;
-      case Error<NewsModel>():
-        errorMasseg = resulet.error;
-        isLoading = false;
-    }
-    setState(() {});
   }
 }
 
