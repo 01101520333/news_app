@@ -10,6 +10,6 @@ class Homeloading extends HomeState {}
 class HomeSuccess extends HomeState {}
 
 class HomeError extends HomeState {
-  String error;
+  final String error;
   HomeError(this.error);
 }
