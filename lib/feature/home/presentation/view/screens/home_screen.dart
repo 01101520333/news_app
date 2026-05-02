@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:news_app/feature/home/data/repo/data_source/home_remote_darta_source_imp.dart';
-import 'package:news_app/feature/home/data/repo/repository/home_repository_imp.dart';
-import 'package:news_app/feature/home/view/widgets/image_item_widget.dart';
-import 'package:news_app/feature/home/view_model/home_cubit.dart';
+import 'package:news_app/feature/home/domain/use_case/get_news_use_case.dart';
+import 'package:news_app/feature/home/presentation/view/widgets/image_item_widget.dart';
+import 'package:news_app/feature/home/presentation/view_model/home_cubit.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,9 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    final data = HomeRemoteDartaSourceImp();
-    final repo = HomeRepositoryImp(data);
-    _cubit = HomeCubit(repo);
+    _cubit = HomeCubit(getNewsUseCaseInject());
     _cubit.getNews();
   }
 
@@ -43,8 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
             return ListView.builder(
               itemBuilder: (context, index) {
                 return ImageItemWidget(
-                  image: _cubit.articles[index].urlToImage ?? dummyImage,
-                  title: _cubit.articles[index].title ?? "",
+                  image: _cubit.articles[index].urlToImage,
+                  title: _cubit.articles[index].title,
                   onTap: () {},
                 );
               },
