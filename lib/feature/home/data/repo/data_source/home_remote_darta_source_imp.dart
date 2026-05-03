@@ -1,6 +1,6 @@
 import 'package:news_app/core/network/resulet_api.dart';
 import 'package:news_app/feature/home/data/api/home_api.dart';
-import 'package:news_app/feature/home/data/models/news_model.dart';
+import 'package:news_app/feature/home/data/models/news_dto.dart';
 // import 'package:http/http.dart' as http;
 import 'package:news_app/feature/home/domain/entities/news_entity.dart';
 import 'package:news_app/feature/home/domain/repo/data_source/home_data_source.dart';
