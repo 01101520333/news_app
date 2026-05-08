@@ -1,27 +1,25 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:news_app/core/handler/api_handler_http_e.dart';
 import 'package:news_app/feature/home/data/models/news_dto.dart';
 import 'package:news_app/core/network/resulet_api.dart';
 
 class HomeApi {
   Future<ResultApi<NewsDto>> getNews() async {
-    //https://newsapi.org/v2/everything?q=bitcoin&apiKey=4cd4fbcaab504103a0a227a9542bcd0c
-    try {
-      Uri url = Uri.https("newsapi.org", "/v2/everything", {
-        'q': "bitcoin",
-        'apiKey': "4cd4fbcaab504103a0a227a9542bcd0c",
-      });
-      var respons = await http.get(url);
-      if (respons.statusCode == 200 && respons.statusCode < 300) {
-        String responsBody = respons.body;
-        Map<String, dynamic> json = jsonDecode(responsBody);
-        return SuccessApi<NewsDto>(NewsDto.fromJson(json));
-      } else {
-        return ErrorApi("Error on requst of Api");
-      }
-    } on Exception catch (e) {
-      return ErrorApi<NewsDto>(e.toString());
-    }
+    return ApiHandlerHttpE.execute<NewsDto>(
+      () async {
+        Uri url = Uri.https("newsapi.org", "/v2/everything", {
+          'q': "bitcoin",
+          'apiKey': "4cd4fbcaab504103a0a227a9542bcd0c",
+        });
+        var respons = await http.get(url);
+        return respons;
+      },
+      (body) {
+        final Map<String, dynamic> json = jsonDecode(body);
+        return NewsDto.fromJson(json);
+      },
+    );
   }
 }

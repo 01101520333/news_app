@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:news_app/core/handler/resulet_api.dart';
+import 'package:news_app/core/network/resulet_api.dart';
 
 class ApiHandlerHttpE {
   static Future<ResultApi<T>> execute<T>(
