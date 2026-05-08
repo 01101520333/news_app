@@ -10,14 +10,14 @@ class HomeRemoteDartaSourceImp implements HomeDataSource {
   final HomeApi _api;
 
   @override
-  Future<ResuletApi<NewsEntity>> getNwes() async {
+  Future<ResultApi<NewsEntity>> getNwes() async {
     final resulte = await _api.getNews();
     switch (resulte) {
-      case Success<NewsDto>():
+      case SuccessApi<NewsDto>():
         final newsDto = resulte.data;
-        return Success<NewsEntity>(newsDto.toEntity());
-      case Error<NewsDto>():
-        return Error<NewsEntity>(resulte.error);
+        return SuccessApi<NewsEntity>(newsDto.toEntity());
+      case ErrorApi<NewsDto>():
+        return ErrorApi<NewsEntity>(resulte.error);
     }
   }
 }

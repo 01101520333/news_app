@@ -17,10 +17,10 @@ class HomeCubit extends Cubit<HomeState> {
     emit(Homeloading());
     final resulet = await getNewsUseCase!.invoke();
     switch (resulet) {
-      case Success<NewsEntity>():
+      case SuccessApi<NewsEntity>():
         articles = resulet.data.articles;
         emit(HomeSuccess());
-      case Error<NewsEntity>():
+      case ErrorApi<NewsEntity>():
         errorMasseg = resulet.error;
         emit(HomeError(errorMasseg));
     }

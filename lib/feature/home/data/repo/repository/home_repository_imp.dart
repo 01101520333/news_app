@@ -9,14 +9,14 @@ class HomeRepositoryImp implements HomeRepository {
   HomeDataSource dataSource;
 
   @override
-  Future<ResuletApi<NewsEntity>> getNews() async {
+  Future<ResultApi<NewsEntity>> getNews() async {
     final resulte = await dataSource.getNwes();
     switch (resulte) {
-      case Success<NewsEntity>():
+      case SuccessApi<NewsEntity>():
         final newsEntity = resulte.data;
-        return Success(newsEntity);
-      case Error<NewsEntity>():
-        return Error(resulte.error);
+        return SuccessApi(newsEntity);
+      case ErrorApi<NewsEntity>():
+        return ErrorApi(resulte.error);
     }
   }
 }

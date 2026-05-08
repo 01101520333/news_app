@@ -5,7 +5,7 @@ import 'package:news_app/feature/home/data/models/news_dto.dart';
 import 'package:news_app/core/network/resulet_api.dart';
 
 class HomeApi {
-  Future<ResuletApi<NewsDto>> getNews() async {
+  Future<ResultApi<NewsDto>> getNews() async {
     //https://newsapi.org/v2/everything?q=bitcoin&apiKey=4cd4fbcaab504103a0a227a9542bcd0c
     try {
       Uri url = Uri.https("newsapi.org", "/v2/everything", {
@@ -16,12 +16,12 @@ class HomeApi {
       if (respons.statusCode == 200 && respons.statusCode < 300) {
         String responsBody = respons.body;
         Map<String, dynamic> json = jsonDecode(responsBody);
-        return Success<NewsDto>(NewsDto.fromJson(json));
+        return SuccessApi<NewsDto>(NewsDto.fromJson(json));
       } else {
-        return Error("Error on requst of Api");
+        return ErrorApi("Error on requst of Api");
       }
     } on Exception catch (e) {
-      return Error<NewsDto>(e.toString());
+      return ErrorApi<NewsDto>(e.toString());
     }
   }
 }

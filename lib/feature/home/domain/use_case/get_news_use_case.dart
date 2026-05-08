@@ -8,7 +8,7 @@ class GetNewsUseCase {
 
   final HomeRepository _repo;
 
-  Future<ResuletApi<NewsEntity>> invoke() => _repo.getNews();
+  Future<ResultApi<NewsEntity>> invoke() => _repo.getNews();
 }
 
 GetNewsUseCase getNewsUseCaseInject() =>
